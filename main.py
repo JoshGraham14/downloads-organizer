@@ -4,6 +4,7 @@ import re
 # Replace with absolute path to Downloads folder
 BASE_PATH: str = 'test_folder'
 IMG_FILE_TYPES: list[str] = ['png', 'jpg', 'jpeg', 'gif', 'raw', 'svg']
+COMP_FILE_TYPES: list[str] = ['zip', 'rar', 'tar', '7z']
 
 
 def check_folders() -> list[str]:
@@ -30,12 +31,16 @@ def create_folders(needed_folders: list[str]) -> None:
         os.mkdir(folder)
 
 
-def sort_folders() -> None:
+def sort_files() -> None:
     directory: list[str] = os.listdir()
     print(f'\.({"|".join(IMG_FILE_TYPES)})$')
     for f in directory:
-        if re.search(f'\.({"|".join(IMG_FILE_TYPES)})$', f):
+        if re.search(f'\.({"|".join(IMG_FILE_TYPES)})$', f.lower()):
             os.replace(f'{os.getcwd()}\{f}', f'{os.getcwd()}\Images\{f}')
+        elif re.search(f'\.pdf$', f.lower()):
+            os.replace(f'{os.getcwd()}\{f}', f'{os.getcwd()}\PDFs\{f}')
+        elif re.search(f'\.({"|".join(COMP_FILE_TYPES)})$', f.lower()):
+            os.replace(f'{os.getcwd()}\{f}', f'{os.getcwd()}\Zipped\{f}')
 
 
 def main():
@@ -43,7 +48,7 @@ def main():
     needed_folders: list[str] = check_folders()
     create_folders(needed_folders)
     print(os.listdir())
-    sort_folders()
+    sort_files()
 
 
 if __name__ == '__main__':
